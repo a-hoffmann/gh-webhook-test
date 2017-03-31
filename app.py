@@ -10,6 +10,7 @@ from urllib.error import HTTPError
 
 import json
 import os
+import sys
 
 from flask import Flask
 from flask import request
@@ -25,11 +26,13 @@ def webhook():
 
     print("Request:")
     print(json.dumps(req, indent=4))
+    sys.stdout.flush()
 
     res = processRequest(req)
 
     res = json.dumps(res, indent=4)
-    # print(res)
+    print(res)
+    sys.stdout.flush()
     r = make_response(res)
     r.headers['Content-Type'] = 'application/json'
     return r
@@ -40,7 +43,7 @@ def processRequest(req):
     if req.get("result").get("action") == "read-recipe":
         speech = "You wanted to read the recipe. Unfortunately, I forgot it."
         
-    else if req.get("result").get("action") == "add-ingredient":
+    elif req.get("result").get("action") == "add-ingredient":
         #do another
         if urlopen("http://www.bbc.com/news").read().find("Singapore") == -1:
             speech="No news of Singapore on BBC News front page"
