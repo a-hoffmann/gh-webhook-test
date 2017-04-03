@@ -11,6 +11,8 @@ from urllib.error import HTTPError
 import json
 import os
 import sys
+import psycopg2
+import urlparse
 
 from flask import Flask
 from flask import request
@@ -18,6 +20,29 @@ from flask import make_response
 
 # Flask app should start in global layout
 app = Flask(__name__)
+
+urlparse.uses_netloc.append("postgres")
+url = urlparse.urlparse(os.environ["DATABASE_URL"])
+
+conn = psycopg2.connect(
+                        database=url.path[1:],
+                        user=url.username,
+                        password=url.password,
+                        host=url.hostname,
+                        port=url.port
+                        )
+
+cur=conn.cursor()
+
+cur.execute("create TABLE test (id serial PRIMARY KEY, formula varchar);")
+cur.execute("INSERT INTO test (formula) VALUES (2mg lavender)")
+
+cur.execute("SELECT * FROM test;")
+cur.fetchone()
+
+conn.commit()
+cur.close()
+conn.close()
 
 
 @app.route('/webhook', methods=['POST'])
