@@ -69,6 +69,7 @@ def processRequest(req):
         
     elif req.get("result").get("action") == "add-ingredient":
         #do another
+        speech = "OK, I'll add %s of %s to the formula", (req.get("result").get("parameters").get("unit-volume"), req.get("result").get("parameters").get("ingredient"))
         cur.execute("INSERT INTO test (formula) VALUES (%s)", (req.get("result").get("parameters").get("ingredient")))
 
     conn.commit()
