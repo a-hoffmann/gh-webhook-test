@@ -35,7 +35,7 @@ conn = psycopg2.connect(
 cur=conn.cursor()
 
 cur.execute("create TABLE test (id serial PRIMARY KEY, formula varchar);")
-cur.execute("INSERT INTO test (formula) VALUES (2mg lavender)")
+cur.execute("INSERT INTO test (formula) VALUES ('2mg lavender')")
 
 cur.execute("SELECT * FROM test;")
 cur.fetchone()
