@@ -71,9 +71,9 @@ def processRequest(req):
         #do another
         cur.execute("INSERT INTO test (formula) VALUES (%s)", (req.get("result").get("parameters").get("ingredient")))
 
-conn.commit()
-cur.close()
-conn.close()
+    conn.commit()
+    cur.close()
+    conn.close()
     
     return {
         "speech": speech,
