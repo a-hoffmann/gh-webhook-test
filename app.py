@@ -21,18 +21,7 @@ from flask import make_response
 # Flask app should start in global layout
 app = Flask(__name__)
 
-urlparse.uses_netloc.append("postgres")
-url = urlparse.urlparse(os.environ["DATABASE_URL"])
 
-conn = psycopg2.connect(
-                        database=url.path[1:],
-                        user=url.username,
-                        password=url.password,
-                        host=url.hostname,
-                        port=url.port
-                        )
-
-cur=conn.cursor()
 
 #cur.execute("create TABLE test (id serial PRIMARY KEY, formula varchar);")
 
@@ -60,17 +49,31 @@ def webhook():
 
 def processRequest(req):
     
+    urlparse.uses_netloc.append("postgres")
+    url = urlparse.urlparse(os.environ["DATABASE_URL"])
+
+    conn = psycopg2.connect(database=url.path[1:],
+                            user=url.username,
+                            password=url.password,
+                            host=url.hostname,
+                            port=url.port)
+
+    cur=conn.cursor()
+    
     if req.get("result").get("action") == "read-recipe":
         ingreds=[]
         cur.execute("SELECT * from test;")
         for ingred in cur.fetchall():
             ingreds.append(ingred[1])
-        speech = "The full current recipe is: "+', '.join(ingreds)
+        speech = "The full current recipe is: "+', '.join(ingreds)+"."
         
     elif req.get("result").get("action") == "add-ingredient":
         #do another
-        speech = "OK, I'll add %s of %s to the formula", (req.get("result").get("parameters").get("unit-volume"), req.get("result").get("parameters").get("ingredient"))
-        cur.execute("INSERT INTO test (formula) VALUES (%s)", (req.get("result").get("parameters").get("ingredient")))
+        speech = "OK, I'll add %s of %s to the formula." % (req.get("result").get("parameters").get("unit-volume"), req.get("result").get("parameters").get("ingredient"))
+        cur.execute("INSERT INTO test (formula) VALUES (%s)" %  (req.get("result").get("parameters").get("ingredient")))
+
+    if len(speech)==0:
+        speech="I'm sorry, something went wrong."
 
     conn.commit()
     cur.close()
