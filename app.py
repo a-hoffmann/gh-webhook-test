@@ -34,15 +34,10 @@ conn = psycopg2.connect(
 
 cur=conn.cursor()
 
-cur.execute("create TABLE test (id serial PRIMARY KEY, formula varchar);")
-cur.execute("INSERT INTO test (formula) VALUES ('2mg lavender')")
+#cur.execute("create TABLE test (id serial PRIMARY KEY, formula varchar);")
 
-cur.execute("SELECT * FROM test;")
-cur.fetchone()
 
-conn.commit()
-cur.close()
-conn.close()
+
 
 
 @app.route('/webhook', methods=['POST'])
@@ -66,13 +61,20 @@ def webhook():
 def processRequest(req):
     
     if req.get("result").get("action") == "read-recipe":
-        speech = "You wanted to read the recipe. Unfortunately, I forgot it."
+        ingreds=[]
+        cur.execute("SELECT * from test;")
+        for ingred in cur.fetchall():
+            ingreds.append(ingred[1])
+        speech = "The full current recipe is: "+', '.join(ingreds)
         
     elif req.get("result").get("action") == "add-ingredient":
         #do another
-        if urlopen("http://www.bbc.com/news").read().find("Singapore") == -1:
-            speech="No news of Singapore on BBC News front page"
+        cur.execute("INSERT INTO test (formula) VALUES (%s)", (req.get("result").get("parameters").get("ingredient")))
 
+conn.commit()
+cur.close()
+conn.close()
+    
     return {
         "speech": speech,
         "displayText": speech,
