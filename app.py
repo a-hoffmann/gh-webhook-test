@@ -66,9 +66,12 @@ def checkstocks(param):
                                                       
 
 def processRequest(req):
+    print("I have recieved it.")
     intent=req.get("result")
     action=intent.get("action")
     parameters=intent.get("parameters")
+    print("my action is "+action)
+
     #just assign speech here, more data to follow
     if action=="weathercheck":
         speech=weathercheck(parameters)
