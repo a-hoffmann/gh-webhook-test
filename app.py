@@ -35,19 +35,59 @@ def webhook():
 
     print("Request:")
     print(json.dumps(req, indent=4))
-    sys.stdout.flush()
 
     res = processRequest(req)
 
     res = json.dumps(res, indent=4)
-    print(res)
-    sys.stdout.flush()
     r = make_response(res)
     r.headers['Content-Type'] = 'application/json'
     return r
 
+#def mapAction(action,parameters):
+ 
+def weathercheck(param):
+    city=param.get("geo-city")
+    url="http://api.openweathermap.org/data/2.5/weather?q=%s&units=metric&appid=03db7a687f5d94e7f63cf259e88e42fa" % (city)
+    result = urlopen(url).read()
+    data = json.loads(result)
+    speech="The weather in %s is %i degrees, with %s." % (city, param.get("main").get("temp"))
+    return speech
+
+def checkstocks(param):
+    speech="I don't have the reference for that one yet"
+    company=param.get("company")
+    compdict={"givaudan":["VTX:GIVN","Swiss Francs"], "symrise": ["ETR:SY1","Euros"],"iff": ["NYSE:IFF","USD"]}
+    if compdict[company]:
+        url="https://www.google.com/finance/info?q=%s" % (compdict[company][0])
+        result = urlopen(url).read()
+        data = json.loads(result[3:])
+        speech="The current stock price for %s is %s %s" % (company, data.get("l"), compdict[company][1])
+    return l
+                                                      
 
 def processRequest(req):
+    intent=req.get("result")
+    action=intent.get("action")
+    parameters=intent.get("parameters")
+    #just assign speech here, more data to follow
+    if action=="weathercheck":
+        speech=weathercheck(parameters)
+    elif action=="check.sp":
+        speech=checkstocks(parameters)
+    else:
+        speech="I don't have an answer for that one tet."
+    
+    return {
+        "speech": speech,
+        "displayText": speech,
+            # "data": data,
+            # "contextOut": [],
+        "source": "fast-wave-17456"
+    }
+
+
+
+def oldProcessRequest(req):
     
     urlparse.uses_netloc.append("postgres")
     url = urlparse.urlparse(os.environ["DATABASE_URL"])
