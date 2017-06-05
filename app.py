@@ -64,7 +64,7 @@ def checkstocks(param):
         url="https://www.google.com/finance/info?q={0}".format(compdict[company][0])
         result = urlopen(url).read()
         data = json.loads(result[3:])
-        speech="The current stock price for {0} is {1} {2}.".format(company, data.get("l"), compdict[company][1])
+        speech="The current stock price for {0} is {1} {2}.".format(company, data[0].get("l"), compdict[company][1])
     return speech
                                                       
 
