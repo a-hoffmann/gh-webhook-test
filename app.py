@@ -47,36 +47,37 @@ def webhook():
  
 def weathercheck(param):
     city=param.get("geo-city")
-    url="http://api.openweathermap.org/data/2.5/weather?q=%s&units=metric&appid=03db7a687f5d94e7f63cf259e88e42fa" % (city)
+    print("city is "+city)
+    url="http://api.openweathermap.org/data/2.5/weather?q={0}&units=metric&appid=03db7a687f5d94e7f63cf259e88e42fa".format(city)
     result = urlopen(url).read()
     data = json.loads(result)
-    speech="The weather in %s is %i degrees, with %s." % (city, param.get("main").get("temp"))
+    speech="The weather in {0} is {1} degrees, with {2}.".format(city, param.get("main").get("temp"), param.get("weather")[0].get("description"))
     return speech
 
 def checkstocks(param):
-    speech="I don't have the reference for that one yet"
+    speech="I don't have the reference for that one yet."
     company=param.get("company")
     compdict={"givaudan":["VTX:GIVN","Swiss Francs"], "symrise": ["ETR:SY1","Euros"],"iff": ["NYSE:IFF","USD"]}
     if compdict[company]:
-        url="https://www.google.com/finance/info?q=%s" % (compdict[company][0])
+        url="https://www.google.com/finance/info?q={0}".format(compdict[company][0])
         result = urlopen(url).read()
         data = json.loads(result[3:])
-        speech="The current stock price for %s is %s %s" % (company, data.get("l"), compdict[company][1])
-    return l
+        speech="The current stock price for {0} is {1} {2}.".format(company, data.get("l"), compdict[company][1])
+    return speech
                                                       
 
 def processRequest(req):
-    print("I have recieved it.")
     intent=req.get("result")
     action=intent.get("action")
     parameters=intent.get("parameters")
-    print("my action is "+action)
 
     #just assign speech here, more data to follow
     if action=="weathercheck":
         speech=weathercheck(parameters)
     elif action=="check.sp":
         speech=checkstocks(parameters)
+    elif action=="ping":
+        speech="Ping!"
     else:
         speech="I don't have an answer for that one tet."
     
