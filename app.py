@@ -51,12 +51,14 @@ def weathercheck(param):
     url="http://api.openweathermap.org/data/2.5/weather?q={0}&units=metric&appid=03db7a687f5d94e7f63cf259e88e42fa".format(city)
     result = urlopen(url).read()
     data = json.loads(result)
-    speech="The weather in {0} is {1} degrees, with {2}.".format(city, param.get("main").get("temp"), param.get("weather")[0].get("description"))
+    speech="The weather in {0} is {1} degrees, with {2}.".format(city, data.get("main").get("temp"), data.get("weather")[0].get("description"))
     return speech
 
 def checkstocks(param):
     speech="I don't have the reference for that one yet."
-    company=param.get("company")
+    print("company will be")
+    company=param.get("company").lower()
+    print("company is "+company)
     compdict={"givaudan":["VTX:GIVN","Swiss Francs"], "symrise": ["ETR:SY1","Euros"],"iff": ["NYSE:IFF","USD"]}
     if compdict[company]:
         url="https://www.google.com/finance/info?q={0}".format(compdict[company][0])
