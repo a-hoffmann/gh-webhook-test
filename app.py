@@ -74,6 +74,7 @@ def recordfeedback(param):
 
     request = Request(url, urlencode(post_fields).encode())
     json = urlopen(request).read().decode()
+    print(json)
     speech="[{2}] I recorded {0} for sample {1}".format(post_fields["feedback"],post_fields["sample"],json["status"])
     return speech
     
