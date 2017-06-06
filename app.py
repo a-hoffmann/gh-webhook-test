@@ -98,7 +98,7 @@ def processRequest(req):
     parameters=intent.get("parameters")
     
     print("processing request... "+action)
-    print("parameters: "+parameters)
+    print("parameters: "+json.dumps(parameters))
 
     #just assign speech here, more data to follow
     if action=="weathercheck":
