@@ -76,9 +76,9 @@ def recordfeedback(param):
     print("covfefe")
     request = Request(url, json.dumps(post_fields))
     request.add_header('Content-Type', 'application/json')
-    json = urlopen(request).read().decode()
-    print(json)
-    speech="[{2}] I recorded {0} for sample {1}".format(post_fields["feedback"],post_fields["sample"],json["status"])
+    respjson = urlopen(request).read().decode()
+    print(respjson)
+    speech="[{2}] I recorded {0} for sample {1}".format(post_fields["feedback"],post_fields["sample"],respjson["status"])
     return speech
     
     
