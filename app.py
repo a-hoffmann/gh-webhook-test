@@ -71,7 +71,7 @@ def recordfeedback(param):
     url = 'https://script.google.com/macros/s/AKfycbzxO9ACRxnerMMWkNruSAue_MHdxKAE_r193bRcUlQhK87mxEf5/exec'
     post_fields = {'sample': param.get("number"),
                   'feedback': param.get("any")}
-    
+    print(json.dumps(post_fields))
     request = Request(url, json.dumps(post_fields))
     request.add_header('Content-Type', 'application/json')
     json = urlopen(request).read().decode()
