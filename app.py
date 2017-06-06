@@ -75,23 +75,21 @@ def recordfeedback(param):
     request.add_header('Content-Type', 'application/json')
     respjson = urlopen(request).read().decode()
     print(respjson)
-    print(json.loads(respjson).get("status"))
     speech="{2}, I recorded {0} for sample {1}".format(post_fields["feedback"],post_fields["sample"],json.loads(respjson).get("status"))
     return speech
 
 def listingredient(param):
-    print("listing ingredients")
-    print(param.get("unit-volume").get("amount"))
-    print(param.get("unit-volume").get("unit"))
-    print("covfefe")
     url = 'https://script.google.com/macros/s/AKfycbzxO9ACRxnerMMWkNruSAue_MHdxKAE_r193bRcUlQhK87mxEf5/exec'
-    post_fields = {'action':'ingredient','volume': param.get("unit-volume").get("amount")+" "+param.get("unit-volume").get("unit"),'ingredient': param.get("ingredient")}
+    post_fields = {
+        'action':'ingredient',
+        'volume': "{0} {1}".format(param.get("unit-volume").get("amount"), param.get("unit-volume").get("unit")),
+        'ingredient': param.get("ingredient")
+    }
     
     request = Request(url, json.dumps(post_fields))
     request.add_header('Content-Type', 'application/json')
     respjson = urlopen(request).read().decode()
     print(respjson)
-    print(json.loads(respjson).get("status"))
     speech="{2}, I recorded {0} {1} into the formula.".format(post_fields["volume"],post_fields["ingredient"],json.loads(respjson).get("status"))
     return speech
     
