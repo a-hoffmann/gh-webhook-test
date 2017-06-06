@@ -104,7 +104,7 @@ def processRequest(req):
     elif action=="record.feedback":
         speech=recordfeedback(parameters)
     elif action=="record.ingredient":
-        speech listingredient(parameters)
+        speech=listingredient(parameters)
     elif action=="ping":
         speech="Ping!"
     else:
