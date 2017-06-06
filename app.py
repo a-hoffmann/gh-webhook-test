@@ -71,10 +71,9 @@ def recordfeedback(param):
     url = 'https://script.google.com/macros/s/AKfycbzxO9ACRxnerMMWkNruSAue_MHdxKAE_r193bRcUlQhK87mxEf5/exec'
     post_fields = {'sample': param.get("number"),
                   'feedback': param.get("any")}
-    print(post_fields['sample'])
-    print(post_fields['feedback'])
-
-    request = Request(url, urlencode(post_fields).encode())
+    
+    request = Request(url, json.dumps(post_fields))
+    request.add_header('Content-Type', 'application/json')
     json = urlopen(request).read().decode()
     print(json)
     speech="[{2}] I recorded {0} for sample {1}".format(post_fields["feedback"],post_fields["sample"],json["status"])
