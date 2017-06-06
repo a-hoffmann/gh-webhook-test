@@ -67,7 +67,17 @@ def checkstocks(param):
         speech="The current stock price for {0} is {1} {2}.".format(company, data[0].get("l"), compdict[company][1])
     return speech
                                                       
+def recordfeedback(param):
+    url = 'https://script.google.com/macros/s/AKfycbzxO9ACRxnerMMWkNruSAue_MHdxKAE_r193bRcUlQhK87mxEf5/exec'
+    post_fields = {'sample': param.get("number"),
+                  'feedback': param.get("any")}
 
+    request = Request(url, urlencode(post_fields).encode())
+    json = urlopen(request).read().decode()
+    speech="[{2}] I recorded {0} for sample {1}".format(post_fields["feedback"],post_fields["sample"],json["status"])
+    return speech
+    
+    
 def processRequest(req):
     intent=req.get("result")
     action=intent.get("action")
@@ -75,9 +85,11 @@ def processRequest(req):
 
     #just assign speech here, more data to follow
     if action=="weathercheck":
-        speech=weathercheck(parameters)
+        speech=weathercheck(parameters) #passing objects?
     elif action=="check.sp":
         speech=checkstocks(parameters)
+    elif action=="record.feedback":
+        speech=recordfeedback(parameters)
     elif action=="ping":
         speech="Ping!"
     else:
