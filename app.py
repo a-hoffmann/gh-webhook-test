@@ -78,7 +78,8 @@ def recordfeedback(param):
     request.add_header('Content-Type', 'application/json')
     respjson = urlopen(request).read().decode()
     print(respjson)
-    speech="[{2}] I recorded {0} for sample {1}".format(post_fields["feedback"],post_fields["sample"],respjson["status"])
+    print(json.loads(respjson).get("status"))
+    speech="{2}, I recorded {0} for sample {1}".format(post_fields["feedback"],post_fields["sample"],json.loads(respjson).get("status"))
     return speech
     
     
