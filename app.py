@@ -69,11 +69,8 @@ def checkstocks(param):
                                                       
 def recordfeedback(param):
     url = 'https://script.google.com/macros/s/AKfycbzxO9ACRxnerMMWkNruSAue_MHdxKAE_r193bRcUlQhK87mxEf5/exec'
-    post_fields = {'sample': param.get("number"),'feedback': param.get("any")}
-    print(post_fields['sample'])
-    print(post_fields['feedback'])
-    print(json.dumps(post_fields))
-    print("covfefe")
+    post_fields = {'action':'sample','sample': param.get("number"),'feedback': param.get("any")}
+    
     request = Request(url, json.dumps(post_fields))
     request.add_header('Content-Type', 'application/json')
     respjson = urlopen(request).read().decode()
@@ -81,7 +78,18 @@ def recordfeedback(param):
     print(json.loads(respjson).get("status"))
     speech="{2}, I recorded {0} for sample {1}".format(post_fields["feedback"],post_fields["sample"],json.loads(respjson).get("status"))
     return speech
+
+def listingredient(param):
+    url = 'https://script.google.com/macros/s/AKfycbzxO9ACRxnerMMWkNruSAue_MHdxKAE_r193bRcUlQhK87mxEf5/exec'
+    post_fields = {'action':'ingredient','unit-volume': param.get("unit-volume"),'ingredient': param.get("ingredient")}
     
+    request = Request(url, json.dumps(post_fields))
+    request.add_header('Content-Type', 'application/json')
+    respjson = urlopen(request).read().decode()
+    print(respjson)
+    print(json.loads(respjson).get("status"))
+    speech="{2}, I recorded {0} {1} into the formula.".format(post_fields["volume"],post_fields["ingredient"],json.loads(respjson).get("status"))
+    return speech
     
 def processRequest(req):
     intent=req.get("result")
@@ -95,6 +103,8 @@ def processRequest(req):
         speech=checkstocks(parameters)
     elif action=="record.feedback":
         speech=recordfeedback(parameters)
+    elif action=="record.ingredient":
+        speech listingredient(parameters)
     elif action=="ping":
         speech="Ping!"
     else:
