@@ -81,6 +81,9 @@ def recordfeedback(param):
 
 def listingredient(param):
     print("listing ingredients")
+    print(param.get("unit-volume").get("amount"))
+    print(param.get("unit-volume").get("unit"))
+    print("covfefe")
     url = 'https://script.google.com/macros/s/AKfycbzxO9ACRxnerMMWkNruSAue_MHdxKAE_r193bRcUlQhK87mxEf5/exec'
     post_fields = {'action':'ingredient','volume': param.get("unit-volume").get("amount")+" "+param.get("unit-volume").get("unit"),'ingredient': param.get("ingredient")}
     
