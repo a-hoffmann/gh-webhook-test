@@ -80,8 +80,9 @@ def recordfeedback(param):
     return speech
 
 def listingredient(param):
+    print("listing ingredients")
     url = 'https://script.google.com/macros/s/AKfycbzxO9ACRxnerMMWkNruSAue_MHdxKAE_r193bRcUlQhK87mxEf5/exec'
-    post_fields = {'action':'ingredient','unit-volume': param.get("unit-volume"),'ingredient': param.get("ingredient")}
+    post_fields = {'action':'ingredient','volume': param.get("unit-volume").get("amount")+" "+param.get("unit-volume").get("unit"),'ingredient': param.get("ingredient")}
     
     request = Request(url, json.dumps(post_fields))
     request.add_header('Content-Type', 'application/json')
