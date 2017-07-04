@@ -97,7 +97,7 @@ def searchingredient(param):
     url = 'https://script.google.com/macros/s/AKfycbzxO9ACRxnerMMWkNruSAue_MHdxKAE_r193bRcUlQhK87mxEf5/exec'
     post_fields = {
         'action':'search',
-        'terms': {"type": param.get("phys-type"),
+        'terms': {"type": param.get("phys-state"),
                   "ingredient": param.get("ingredient").title(),
                   "location": param.get("geo-country").title()} 
     }
