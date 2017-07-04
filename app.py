@@ -96,7 +96,7 @@ def listingredient(param):
 def searchingredient(param):
     url = 'https://script.google.com/macros/s/AKfycbzxO9ACRxnerMMWkNruSAue_MHdxKAE_r193bRcUlQhK87mxEf5/exec'
     post_fields = {
-        'action':'ingredient',
+        'action':'search',
         'terms': {"type": param.get("phys-type"),
                   "ingredient": param.get("ingredient"),
                   "location": param.get("geo-country")} 
