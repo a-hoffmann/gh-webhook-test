@@ -92,7 +92,23 @@ def listingredient(param):
     print(respjson)
     speech="{2}, I recorded {0} {1} into the formula.".format(post_fields["volume"],post_fields["ingredient"],json.loads(respjson).get("status"))
     return speech
+
+def searchingredient(param):
+    url = 'https://script.google.com/macros/s/AKfycbzxO9ACRxnerMMWkNruSAue_MHdxKAE_r193bRcUlQhK87mxEf5/exec'
+    post_fields = {
+        'action':'ingredient',
+        'terms': {"type": param.get("phys-type"),
+                  "ingredient": param.get("ingredient"),
+                  "location": param.get("geo-country")} 
+    }
     
+    request = Request(url, json.dumps(post_fields))
+    request.add_header('Content-Type', 'application/json')
+    respjson = urlopen(request).read().decode()
+    print(respjson)
+    speech="Searched for ingredients matching your criteria"
+    return speech
+
 def processRequest(req):
     intent=req.get("result")
     action=intent.get("action")
@@ -110,6 +126,8 @@ def processRequest(req):
         speech=recordfeedback(parameters)
     elif action=="record.ingredient":
         speech=listingredient(parameters)
+    elif action=="search.ingredient":
+        speech=searchingredient(parameters)
     elif action=="ping":
         speech="Ping!"
     else:
