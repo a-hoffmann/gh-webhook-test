@@ -98,8 +98,8 @@ def searchingredient(param):
     post_fields = {
         'action':'search',
         'terms': {"type": param.get("phys-type"),
-                  "ingredient": param.get("ingredient"),
-                  "location": param.get("geo-country")} 
+                  "ingredient": param.get("ingredient").title(),
+                  "location": param.get("geo-country").title()} 
     }
     
     request = Request(url, json.dumps(post_fields))
