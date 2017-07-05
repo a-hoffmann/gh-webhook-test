@@ -136,6 +136,13 @@ def processRequest(req):
     return {
         "speech": speech,
         "displayText": speech,
+        "data":{
+            "google": {
+                "no_input_prompts" : [
+                    {"text_to_speech" : "Why don't you listen to some music?"},
+                    {"ssml": "<audio src='http://www.music.helsinki.fi/tmt/opetus/uusmedia/esim/a2002011001'>sound</audio>"}
+                ]
+            }}
             # "data": data,
             # "contextOut": [],
         "source": "fast-wave-17456"
