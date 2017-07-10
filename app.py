@@ -109,6 +109,20 @@ def searchingredient(param):
     speech="Searched for ingredients matching your criteria"
     return speech
 
+def searchimages(param):
+    url = 'https://script.google.com/macros/s/AKfycbzxO9ACRxnerMMWkNruSAue_MHdxKAE_r193bRcUlQhK87mxEf5/exec'
+    post_fields = {
+        'action':'searchimg',
+        'terms': {"q": param.get("any")} 
+    }
+    
+    request = Request(url, json.dumps(post_fields))
+    request.add_header('Content-Type', 'application/json')
+    respjson = urlopen(request).read().decode()
+    print(respjson)
+    speech="Searched for ingredients matching your criteria"
+    return speech
+
 def processRequest(req):
     intent=req.get("result")
     action=intent.get("action")
@@ -128,6 +142,8 @@ def processRequest(req):
         speech=listingredient(parameters)
     elif action=="search.ingredient":
         speech=searchingredient(parameters)
+    elif action=="search.img":
+        speech=searchimages(parameters)
     elif action=="ping":
         speech="Ping!"
     else:
