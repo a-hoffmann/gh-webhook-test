@@ -120,7 +120,7 @@ def searchimages(param):
     request.add_header('Content-Type', 'application/json')
     respjson = urlopen(request).read().decode()
     print(respjson)
-    speech="Searched for ingredients matching your criteria"
+    speech="Here are the images I could find."
     return speech
 
 def processRequest(req):
