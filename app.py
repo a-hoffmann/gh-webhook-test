@@ -66,7 +66,19 @@ def checkstocks(param):
         data = json.loads(result[3:])
         speech="The current stock price for {0} is {1} {2}.".format(company, data[0].get("l"), compdict[company][1])
     return speech
-                                                      
+
+def findfeedback(param):
+    url = 'https://script.google.com/macros/s/AKfycbzxO9ACRxnerMMWkNruSAue_MHdxKAE_r193bRcUlQhK87mxEf5/exec'
+    post_fields = {'action':'findfeedback','sample': param.get("number")}
+    
+    request = Request(url, json.dumps(post_fields))
+    request.add_header('Content-Type', 'application/json')
+    respjson = urlopen(request).read().decode()
+    print(respjson)
+    speech="The feedback for that sample was {0}".format(json.loads(respjson).get("fback"))
+    return speech
+
+
 def recordfeedback(param):
     url = 'https://script.google.com/macros/s/AKfycbzxO9ACRxnerMMWkNruSAue_MHdxKAE_r193bRcUlQhK87mxEf5/exec'
     post_fields = {'action':'sample','sample': param.get("number"),'feedback': param.get("any")}
@@ -144,6 +156,8 @@ def processRequest(req):
         speech=searchingredient(parameters)
     elif action=="search.img":
         speech=searchimages(parameters)
+    elif action=="find.feedback":
+        speech=findfeedback(parameters)
     elif action=="ping":
         speech="Ping!"
     else:
