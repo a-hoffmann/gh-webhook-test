@@ -166,12 +166,12 @@ def processRequest(req):
     return {
         "speech": speech,
         "displayText": speech,
-        "data":{
-            "google": {
-                "no_input_prompts" : [
-                    {"ssml": "<speak>Why don't you listen to some <audio src='https://freemusicarchive.org/music/listen/e2bf2f4446a40c05864dc5cb6f5cfe64ede7066d'>sound</audio></speak>"}
-                ]
-           }},
+      #  "data":{
+       #     "google": {
+        #        "no_input_prompts" : [
+         #           {"ssml": "<speak>Why don't you listen to some <audio src='https://freemusicarchive.org/music/listen/e2bf2f4446a40c05864dc5cb6f5cfe64ede7066d'>sound</audio></speak>"}
+          #      ]
+           #}},
             # "data": data,
             # "contextOut": [],
         "source": "fast-wave-17456"
