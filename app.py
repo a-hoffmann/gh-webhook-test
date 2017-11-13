@@ -164,6 +164,8 @@ def processRequest(req):
         speech=recordfeedback(parameters)
     elif action=="record.ingredient":
         speech=listingredient(parameters)
+    elif action=="undo.ingredient":
+        speech=undo(parameters)
     elif action=="search.ingredient":
         speech=searchingredient(parameters)
     elif action=="search.img":
@@ -173,7 +175,7 @@ def processRequest(req):
     elif action=="ping":
         speech="Ping!"
     else:
-        speech="I don't have an answer for that one tet."
+        speech="I don't have an answer for that request yet."
     
     return {
         "speech": speech,
