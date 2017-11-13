@@ -11,8 +11,8 @@ from urllib.error import HTTPError
 import json
 import os
 import sys
-import psycopg2
 import urlparse
+import random
 
 from flask import Flask
 from flask import request
@@ -113,7 +113,20 @@ def undo(param):
     request = Request(url, json.dumps(post_fields))
     request.add_header('Content-Type', 'application/json')
     respjson = urlopen(request).read().decode()
-    speech="Ok, I removed the last ingredient in the formula"
+    possible_responses=["Ok, I've removed the last ingredient.", "Sure, I'll take it out now.", "Ok, removing last ingredient.", "Done, you can continue now."]
+    speech=random.choice(possible_responses)
+    return speech
+
+def reset(param):
+    url = 'https://script.google.com/macros/s/AKfycbzxO9ACRxnerMMWkNruSAue_MHdxKAE_r193bRcUlQhK87mxEf5/exec'
+    post_fields = {
+        'action':'reset',
+        }
+    request = Request(url, json.dumps(post_fields))
+    request.add_header('Content-Type', 'application/json')
+    respjson = urlopen(request).read().decode()
+    possible_responses=["Ok, I've forgotten the formula now.", "Sure, I'll erase it now.", "Done, it has been cleared.", "You can start over again now"]
+    speech=random.choice(possible_responses)
     return speech
 
 
@@ -166,6 +179,8 @@ def processRequest(req):
         speech=listingredient(parameters)
     elif action=="undo.ingredient":
         speech=undo(parameters)
+    elif action=="reset.ingredient":
+        speech=reset(parameters)
     elif action=="search.ingredient":
         speech=searchingredient(parameters)
     elif action=="search.img":
@@ -198,13 +213,13 @@ def oldProcessRequest(req):
     urlparse.uses_netloc.append("postgres")
     url = urlparse.urlparse(os.environ["DATABASE_URL"])
 
-    conn = psycopg2.connect(database=url.path[1:],
-                            user=url.username,
-                            password=url.password,
-                            host=url.hostname,
-                            port=url.port)
+   # conn = psycopg2.connect(database=url.path[1:],
+    #                        user=url.username,
+     #                       password=url.password,
+      ##                      host=url.hostname,
+        #                    port=url.port)
 
-    cur=conn.cursor()
+    #cur=conn.cursor()
     
     if req.get("result").get("action") == "read-recipe":
         ingreds=[]
