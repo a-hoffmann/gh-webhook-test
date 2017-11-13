@@ -125,7 +125,7 @@ def reset(param):
     request = Request(url, json.dumps(post_fields))
     request.add_header('Content-Type', 'application/json')
     respjson = urlopen(request).read().decode()
-    possible_responses=["Ok, I've forgotten the formula now.", "Sure, I'll erase it now.", "Done, it has been cleared.", "You can start over again now"]
+    possible_responses=["Ok, I've stopped listening now", "Let's do something else.", "Ok, I've forgotten the formula now.", "Sure, I'll erase it now.", "Done, it has been cleared.", "You can start over again now"]
     speech=random.choice(possible_responses)
     return speech
 
