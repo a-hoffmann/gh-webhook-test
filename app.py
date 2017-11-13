@@ -105,6 +105,18 @@ def listingredient(param):
     speech="{2}, I recorded {0} {1} into the formula.".format(post_fields["volume"],post_fields["ingredient"],json.loads(respjson).get("status"))
     return speech
 
+def undo(param):
+    url = 'https://script.google.com/macros/s/AKfycbzxO9ACRxnerMMWkNruSAue_MHdxKAE_r193bRcUlQhK87mxEf5/exec'
+    post_fields = {
+        'action':'undo',
+        }
+    request = Request(url, json.dumps(post_fields))
+    request.add_header('Content-Type', 'application/json')
+    respjson = urlopen(request).read().decode()
+    speech="Ok, I removed the last ingredient in the formula"
+    return speech
+
+
 def searchingredient(param):
     url = 'https://script.google.com/macros/s/AKfycbzxO9ACRxnerMMWkNruSAue_MHdxKAE_r193bRcUlQhK87mxEf5/exec'
     post_fields = {
